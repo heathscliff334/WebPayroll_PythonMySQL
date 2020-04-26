@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ecf0f1;
+}
+
+.login-form {
+  width: 330px;
+  height: auto;
+  padding: 32px;
+  display: block;
+  background-color: #34495e;
+  border-radius: 13px;
+  box-shadow: 3px 3px 10px #777;
+}
+  .login-form__hdg {
+    display: block;
+    width: max-content;
+    margin: 0 auto;
+    margin-bottom: 32px;
+    font-size: 28px;
+    color: #fff;
+    letter-spacing: 0.05em;
+  }
+  .login-form__field {
+    display: grid;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+
+.input-group {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+  .input-group__input {
+    display: block;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background-color: transparent;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #fff; //white
+    padding: 8px 4px;
+    outline: none;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 2px solid #fff; 
+  } 
+    .input-group__input:valid ~ .input-group__label {
+      color: #2ecc71; //green
+    }
+    .input-group__input:invalid ~ .input-group__label {
+      color: #e74c3c; //red
+    }
+    .input-group__input:placeholder-shown ~ .input-group__label {
+      color: #fff; //white
+    }
+    /* Floating animation */
+    .input-group__input:focus ~ .input-group__label, 
+    .input-group__input:not(:placeholder-shown) ~ .input-group__label {
+      transform: translateX(-8px) translateY(-28px) scale(0.8);
+    }
+
+  .input-group__label {
+    /*font-size: 20px;*/
+    letter-spacing: 0.07em;
+    position: absolute;
+    top: 8px;
+    left: 4px;
+    cursor: text;
+    user-select: none;
+    transition: all 0.3s ease;
+  }
+
+
+.login-btn {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  color: #fff;
+  width: 100%;
+  padding: 8px;
+  border-radius: 30px;
+  background-color: transparent;
+  border: solid 2px #fff;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+}
+  .login-btn:hover {
+    color: #2ecc71; //green
+    border: 2px solid #2ecc71;
+  }
+  .login-btn:active {
+    transform: scale(0.9);
+  }
+
+
+
+
+
+

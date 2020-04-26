@@ -1,0 +1,30 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aplikasi HRD - By Kevin LH</title>
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../static/css/login_style.css">
+ </head>
+ <body>
+<form class="login-form" action="http://localhost:5000/login" method="POST">
+  <h2 class="login-form__hdg">Login</h2>
+  <div class="login-form__field">
+    <div class="input-group">
+      <input class="input-group__input" id="username" type="text" placeholder=" " autocomplete="off" name="username">
+      <label class="input-group__label" for="username">Username</label>
+    </div>
+    <div class="input-group">
+      <input class="input-group__input" id="password" type="password" placeholder=" " autocomplete="off" name="password">
+      <label class="input-group__label" for="password">Password</label>
+    </div>
+  </div>
+  {{ container}}
+  <button class="login-btn" type="submit">Login</button>
+  <!-- sementara -->
+  <!-- <a href="/karyawan" class="btn login-btn">Login</a> -->
+</form>
+
+ </body>
+</html>
