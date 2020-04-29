@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head -->
+{% include '_partials/head.html' %}
+<body class="fix-header" onload="loadId()">
+    <!-- Preloader -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Navigation / Header -->
+        {% include '_partials/navigation.html' %}
+        <!-- Sidebar -->
+        {% include '_partials/sidebar.html' %}
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <!-- Breadcrumb -->
+                {% include '_partials/breadcrumb.html' %}
+                <div class="row w3-animate-bottom">
+                    <div class="col-md-6">
+                        <div class="white-box">
+                            <!-- <h3 class="box-title">Dashboard</h3> -->
+                               <form class="form" action="{{ url_for('tambah_payroll') }}" method="POST">
+                                  <div class="form-group">
+                                     <label for="id">ID</label>
+                                     <input class="form-control" type="text" name="id" id="idPayroll" style="display: none">
+                                     <input class="form-control" type="text" name="idtemp" id="idTemp" disabled>
+                                  </div>                                
+                                  <div class="form-group">
+                                     <label for="nik">NIK - Nama Karyawan</label>
+                                     <!-- <input class="form-control" type="text" name="username"> -->
+                                    <select class="form-control" name="nik" onchange="myChangeFunction(this)" id="selJbt">
+                                       <option value="" name ="role">---Pilih---</option>
+                                       {% for karyawan in dataKaryawan %}
+                                       <option value="{{karyawan[0]}}" name="nik">{{karyawan[0]}} - {{karyawan[1]}}</option>                                      
+                                       {% endfor %}
+                                     </select>
+                                  </div>
+                                  <!-- <div id="test4"></div> -->
+                                  <div class="form-group" style="display: none;">
+                                     <label for="date">Date</label>
+                                     <input class="form-control" type="text" name="date" id="currDate">
+                                  </div>                                  
+                                  <div class="form-group">
+                                     <label for="gapok">Gaji Pokok</label>
+                                     <input class="form-control" type="text" name="gapok" id="gapok">
+                                  </div>
+                                  <div class="form-group">
+                                     <label for="tunjangan">Tunjangan (%)</label>
+                                     <input class="form-control" type="text" name="tunjangan" id="tunj">
+                                  </div>                                  
+                                  <div class="form-group">
+                                     <label for="tot_gaji">Total Gaji</label>
+                                     <input class="form-control" type="text" name="tot_gaji" id="total">
+                                  </div>
+                                  <a class="btn btn-danger" href="/payroll">Kembali</a>
+                                  <input class="btn btn-primary" type="submit" name="btnSubmit" value="Simpan">
+                               </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+            <!-- Footer -->
+            {% include '_partials/footer.html' %}
+        </div>
+    </div>
+    <!-- Javascript -->
+    {% include '_partials/js.html' %}
+    <script type="text/javascript">
+      function loadId(){
+        {% for idGaji in dataIdGaji %}
+        var idTempTrx = "PY-"+'{{idGaji[0]}}';
+        var idTrx ='{{idGaji[0]}}';
+        {% endfor %}
+        document.getElementById("idTemp").value = idTempTrx;
+        document.getElementById("idPayroll").value = idTrx;
+      }
+      function myChangeFunction(selJbt) {
+        var tunj = document.getElementById('tunj');
+        var gapok = document.getElementById('gapok');
+        var now = document.getElementById('currDate');
+        var total = document.getElementById('total');
+
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;        
+
+        var nik = [];
+        var gajiPokok = [];
+        var tunjangan = [];
+        var j=0;
+        var temp = 0;
+        {% for karyawanG in dataKaryawan %}
+        nik[j]='{{karyawanG[0]}}';
+        gajiPokok[j]='{{karyawanG[3]}}';
+        tunjangan[j]='{{karyawanG[2]}}';
+
+        if (nik[j]==selJbt.value) {
+          // document.getElementById("test4").innerHTML = today;
+          gapok.value = gajiPokok[j];
+          tunj.value = tunjangan[j];
+          now.value = today;
+          temp = gapok.value * (tunj.value/100);
+          total.value=temp + parseInt(gapok.value);
+        } else if( selJbt.value == ""){
+          // document.getElementById("test4").innerHTML = "";
+          gapok.value = "";
+          tunj.value = "";
+          now.value = "";
+          total.value = "";
+        } 
+        else{
+          j++;
+        }
+        {% endfor %}        
+      }
+    </script>   
+  </body> 
+</html>
+

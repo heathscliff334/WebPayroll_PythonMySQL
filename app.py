@@ -39,25 +39,32 @@ def home():
 def login():
    openDb()
    if request.method == 'POST':
+      if request.form['username'] == '':
+         print 'kosong'
+         errMessage = 'Username / Password Kosong!!'
+         return render_template('login.html', errMessage=errMessage)    
       usr = request.form['username']
       passw = request.form['password']
+
       cursor.execute("SELECT * FROM users WHERE username ='%s'" %usr)
       container = []
       for user_id,username,password,nama_lengkap,role in cursor.fetchall():
          container.append((user_id,username,password,nama_lengkap,role))
       closeDb()
+
       if usr == username and passw == password:
          print 'benar'
-         return redirect(url_for('karyawan'))
+         return redirect(url_for('home'))
       else :
          print 'salah'
-      return render_template('login.html', container=container)
+         errMessage = 'Username / Password Salah!!'
+         return render_template('login.html', errMessage=errMessage)
 
 # USERS
 @app.route('/users')
 def user():
    openDb()
-   uriTest = 'User'
+   uriTest = 'Master User'
    cursor.execute('SELECT * FROM users')
    container = []
    for user_id, username, password, nama_lengkap, role in cursor.fetchall():
@@ -67,7 +74,7 @@ def user():
 
 @app.route('/tambah_user', methods=['GET','POST'])
 def tambah_user():
-   uriTest = 'Register User'
+   uriTest = 'Master User'
    if request.method == 'POST':
       user_id = '';
       username = request.form['username']
@@ -87,7 +94,7 @@ def tambah_user():
 @app.route('/ubah_user/<id>', methods=['GET','POST'])
 def ubah_user(id):
    openDb()
-   uriTest = 'Ubah User'
+   uriTest = 'Master User'
    cursor.execute("SELECT * FROM users WHERE user_id='%s'" % id)
    data = cursor.fetchone()
    if request.method == 'POST':
@@ -116,8 +123,8 @@ def hapus_user(id):
 @app.route('/karyawan')
 def karyawan():
    openDb()
-   uriTest = 'Karyawan'
-   cursor.execute('SELECT * FROM karyawan')
+   uriTest = 'Master Karyawan'
+   cursor.execute('SELECT karyawan.nik, karyawan.nama, jabatan.nama_jabatan, karyawan.email, karyawan.telp FROM karyawan JOIN jabatan ON karyawan.jabatan = jabatan.id')
    container = []
    for nik,nama,jabatan,email, telp in cursor.fetchall():
       container.append((nik,nama,jabatan,email, telp,uriTest))
@@ -126,9 +133,13 @@ def karyawan():
 
 @app.route('/ubah_karyawan/<nik>', methods=['GET','POST'])
 def ubah_karyawan(nik):
-   openDb()
-   uriTest = 'Ubah Karyawan'
-   cursor.execute("SELECT * FROM karyawan WHERE nik='%s'" % nik)
+   openDb() 
+   cursor.execute('SELECT * FROM jabatan')
+   dataJabatan = []
+   for id, nama_jabatan, tunjangan in cursor.fetchall():
+      dataJabatan.append((id, nama_jabatan, tunjangan))    
+   uriTest = 'Master Karyawan'
+   cursor.execute("SELECT karyawan.nik, karyawan.nama, karyawan.jabatan, jabatan.nama_jabatan, karyawan.email, karyawan.telp FROM karyawan JOIN jabatan ON karyawan.jabatan = jabatan.id WHERE nik='%s'" % nik)
    data = cursor.fetchone()
    if request.method == 'POST':
       nik = request.form['nik']
@@ -145,26 +156,33 @@ def ubah_karyawan(nik):
       return redirect(url_for('karyawan'))
    else:
       closeDb()
-      return render_template('karyawan/ubah_karyawan.html', data=data, uriTest=uriTest)
+      return render_template('karyawan/ubah_karyawan.html', data=data, dataJabatan=dataJabatan, uriTest=uriTest)
 
 @app.route('/tambah_karyawan', methods=['GET','POST'])
 def tambah_karyawan():
-   uriTest = 'Tambah Karyawan'
+   openDb()
+   cursor.execute('SELECT * FROM jabatan')
+   dataJabatan = []
+   for id, nama_jabatan, tunjangan in cursor.fetchall():
+      dataJabatan.append((id, nama_jabatan, tunjangan))   
+   closeDb()
+   uriTest = 'Master Karyawan'
    if request.method == 'POST':
       nik = request.form['nik']
       nama = request.form['nama']
       jabatan = request.form['jabatan']
+      gaji_pokok = request.form['gapok']
       email = request.form['email']
       telp = request.form['telp']
-      data = (nik, nama, jabatan, email, telp)
+      data = (nik, nama, jabatan, gaji_pokok, email, telp)
       openDb()
       cursor.execute('''
-        INSERT INTO karyawan VALUES('%s','%s','%s','%s', '%s')''' % data)
+        INSERT INTO karyawan VALUES('%s','%s','%s','%s', '%s', '%s')''' % data)
       conn.commit()
       closeDb()
       return redirect(url_for('karyawan'))
    else:
-      return render_template('karyawan/tambah_karyawan.html', uriTest=uriTest)
+      return render_template('karyawan/tambah_karyawan.html', dataJabatan=dataJabatan, uriTest=uriTest)
 
 @app.route('/hapus_karyawan/<nik>', methods=['GET','POST'])
 def hapus_karyawan(nik):
@@ -173,6 +191,122 @@ def hapus_karyawan(nik):
    conn.commit()
    closeDb()
    return redirect(url_for('karyawan'))
+
+# Payroll
+@app.route('/payroll')
+def payroll():
+   openDb()
+   uriTest = 'Payroll'
+   cursor.execute("SELECT gaji.id, gaji.nik, karyawan.nama, gaji.tanggal, jabatan.nama_jabatan, gaji.gaji_pokok, jabatan.tunjangan, gaji.total_gaji FROM gaji join karyawan on gaji.nik = karyawan.nik join jabatan on karyawan.jabatan = jabatan.id ORDER BY gaji.id desc")
+   container = []
+   for id, nik, nama, tanggal, jabatan, gaji_pokok, tunjangan, total_gaji in cursor.fetchall():
+      container.append((id, nik, nama, tanggal, jabatan, gaji_pokok, tunjangan, total_gaji, uriTest))
+   closeDb()
+   return render_template('payroll/list_payroll.html', container=container, uriTest=uriTest)  
+
+@app.route('/tambah_payroll', methods=['GET','POST'])
+def tambah_payroll():
+   openDb()
+   cursor.execute('SELECT karyawan.nik, karyawan.nama, jabatan.tunjangan, karyawan.gaji_pokok FROM karyawan JOIN jabatan ON karyawan.jabatan = jabatan.id')
+   dataKaryawan = []
+   for nik, nama, tunjangan, gaji_pokok in cursor.fetchall():
+      dataKaryawan.append((nik, nama, tunjangan, gaji_pokok))   
+   cursor.execute('SELECT MAX(id)+1 FROM gaji')
+   dataIdGaji = []
+   for id in cursor.fetchall():
+      dataIdGaji.append((id))        
+   closeDb()   
+   uriTest = 'Payroll'
+   if request.method == 'POST':
+      id = request.form['id']
+      nik = request.form['nik']
+      tanggal = request.form['date']
+      gaji_pokok = request.form['gapok']
+      total_gaji = request.form['tot_gaji']
+      data = (id, nik, tanggal, gaji_pokok, total_gaji)
+      openDb()
+      cursor.execute('''
+        INSERT INTO gaji VALUES('%s','%s','%s','%s','%s')''' % data)
+      conn.commit()
+      closeDb()
+      return redirect(url_for('payroll'))
+   else:
+      return render_template('payroll/tambah_payroll.html', dataKaryawan=dataKaryawan, dataIdGaji=dataIdGaji, uriTest=uriTest)
+
+@app.route('/print_payroll/<id>', methods=['GET','POST'])
+def print_payroll(id):
+   openDb()
+   uriTest = 'Print Payroll'
+   cursor.execute("SELECT gaji.id, gaji.tanggal,karyawan.nik, karyawan.nama,  karyawan.gaji_pokok, jabatan.tunjangan, gaji.total_gaji FROM karyawan JOIN gaji on karyawan.nik = gaji.nik JOIN jabatan ON karyawan.jabatan = jabatan.id WHERE gaji.id='%s'" % id)
+   data = cursor.fetchone()
+   closeDb()
+   return render_template('payroll/print_payroll.html', data=data, uriTest=uriTest)
+
+@app.route('/hapus_payroll/<id>', methods=['GET','POST'])
+def hapus_payroll(id):
+   openDb()
+   cursor.execute("DELETE FROM gaji WHERE id='%s'" % id)
+   conn.commit()
+   closeDb()
+   return redirect(url_for('payroll'))
+
+# jabatan
+@app.route('/jabatan')
+def jabatan():
+   openDb()
+   uriTest = 'Master Jabatan'
+   cursor.execute('SELECT * FROM jabatan')
+   container = []
+   for id, nama_jabatan, tunjangan in cursor.fetchall():
+      container.append((id, nama_jabatan, tunjangan, uriTest))
+   closeDb()
+   return render_template('jabatan/list_jabatan.html', container=container, uriTest=uriTest)  
+
+@app.route('/tambah_jabatan', methods=['GET','POST'])
+def tambah_jabatan():
+   uriTest = 'Master Jabatan'
+   if request.method == 'POST':
+      id = request.form['id']
+      nama_jabatan = request.form['nama_jabatan']
+      tunjangan = request.form['tunjangan']
+      data = (id, nama_jabatan, tunjangan)
+      openDb()
+      cursor.execute('''
+        INSERT INTO jabatan VALUES('%s','%s','%s')''' % data)
+      conn.commit()
+      closeDb()
+      return redirect(url_for('jabatan'))
+   else:
+      return render_template('jabatan/tambah_jabatan.html', uriTest=uriTest)
+
+@app.route('/ubah_jabatan/<id>', methods=['GET','POST'])
+def ubah_jabatan(id):
+   openDb()
+   uriTest = 'Master Karyawan'
+   cursor.execute("SELECT * FROM jabatan WHERE id='%s'" % id)
+   data = cursor.fetchone()
+   if request.method == 'POST':
+      id = request.form['id']
+      nama_jabatan = request.form['nama_jabatan']
+      tunjangan = request.form['tunjangan']
+      cursor.execute('''
+         UPDATE jabatan SET nama_jabatan='%s', tunjangan='%s'
+         WHERE id='%s'
+      ''' % (nama_jabatan, tunjangan, id))
+      conn.commit()
+      closeDb()
+      return redirect(url_for('jabatan'))
+   else:
+      closeDb()
+      return render_template('jabatan/ubah_jabatan.html', data=data, uriTest=uriTest)
+
+@app.route('/hapus_jabatan/<id>', methods=['GET','POST'])
+def hapus_jabatan(id):
+   openDb()
+   cursor.execute("DELETE FROM jabatan WHERE id='%s'" % id)
+   conn.commit()
+   closeDb()
+   return redirect(url_for('jabatan'))
 
 @app.route('/dashboard')
 def dashboard():

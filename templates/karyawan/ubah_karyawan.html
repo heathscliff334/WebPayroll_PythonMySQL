@@ -39,15 +39,22 @@
                                   </div>
                                   <div class="form-group">
                                      <label for="jabatan">Jabatan</label>
-                                     <input class="form-control" type="text" name="jabatan" value="{{data[2]}}">
+                                    <select class="form-control" name="jabatan">
+                                       <option value="{{data[2]}}" name ="role">{{data[2]}} - {{data[3]}}</option>
+                                       <optgroup>
+                                       {% for jabatan in dataJabatan %}
+                                       <option value="{{jabatan[0]}}" name="jabatan">{{jabatan[0]}} - {{jabatan[1]}}</option>
+                                       {% endfor %}
+                                       </optgroup>
+                                     </select>                                     
                                   </div>
                                   <div class="form-group">
                                      <label for="email">Email</label>
-                                     <input class="form-control" type="text" name="email" value="{{data[3]}}">
+                                     <input class="form-control" type="text" name="email" value="{{data[4]}}">
                                   </div>
                                   <div class="form-group">
                                      <label for="telp">Telp</label>
-                                     <input class="form-control" type="text" name="telp" value="{{data[4]}}">
+                                     <input class="form-control" type="text" name="telp" value="{{data[5]}}">
                                   </div>
                                   <a class="btn btn-danger" href="/karyawan">Kembali</a>
                                   <input class="btn btn-primary" type="submit" name="btnSubmit" value="Simpan">

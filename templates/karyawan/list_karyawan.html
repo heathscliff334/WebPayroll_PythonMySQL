@@ -25,15 +25,15 @@
                         <div class="white-box">
                             <h3 class="box-title">Dashboard</h3>
                             <a href="http://localhost:5000/tambah_karyawan" style="float: right;"><i class="fa fa-plus"></i> Tambah</a>
-                            <table class="table table-responsive table-hover table-striped">
+                            <table class="table table-responsive table-hover table-striped" id="dataTables">
                                 <thead>
                                     <tr>
                                       <th width=60>NIK</th>
-                                      <th width=200>Nama</th>
-                                      <th width=170>Jabatan</th>
+                                      <th width=170>Nama</th>
+                                      <th width=100>Jabatan</th>
                                       <th width=170>Email</th>
                                       <th width=80>Telp</th>
-                                      <th width="25">Action</th>
+                                      <th width="30">Action</th>
                                    </tr>                                    
                                 </thead>
                                 <tbody>
@@ -45,8 +45,8 @@
                                          <td>{{ baris[3] }}</td>
                                          <td>{{ baris[4] }}</td>
                                          <td>
-                                          <a href="http://localhost:5000/ubah_karyawan/{{baris[0]}}" class="btn btn-success custom-btn" style="width: 30px; font-size: 18px; padding: 5px;"><i class="fa fa-edit"></i></a>
-                                         <a href="http://localhost:5000/hapus_karyawan/{{baris[0]}}" class="btn btn-danger custom-btn" style="width: 30px; font-size: 18px; padding: 5px;"><i class="fa fa-trash-o"></i></a>
+                                          <a href="http://localhost:5000/ubah_karyawan/{{baris[0]}}" class="btn btn-success custom-btn" style="width: 30px; font-size: 18px; padding: 2px;"><i class="fa fa-edit"></i></a>
+                                         <a href="http://localhost:5000/hapus_karyawan/{{baris[0]}}" class="btn btn-danger custom-btn" style="width: 30px; font-size: 18px; padding: 2px;"><i class="fa fa-trash-o"></i></a>
                                        </td>
                                       </tr>
                                    {% endfor %}

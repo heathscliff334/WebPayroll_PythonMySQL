@@ -23,30 +23,37 @@
                 <div class="row w3-animate-bottom">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3 class="box-title">List User</h3>
-                            <a href="http://localhost:5000/tambah_user" style="float: right;"><i class="fa fa-plus"></i> Tambah</a>
+                            <h3 class="box-title">List Payroll</h3>
+                            <a href="http://localhost:5000/tambah_payroll" style="float: right;"><i class="fa fa-plus"></i> Tambah</a>
                             <table class="table table-responsive table-hover table-striped" id="dataTables">
                                 <thead>
                                     <tr>
                                       <th width=60>ID</th>
-                                      <th width=200>Username</th>
+                                      <th width=25>NIK</th>
                                       <th width=170>Nama Lengkap</th>
-                                      <th width=170>Password</th>
-                                      <th width=80>Role</th>
-                                      <th width="25">Action</th>
+                                      <th width=25>Tanggal</th>
+                                      <th width=60>Jabatan</th>
+                                      <th width=90>Gaji Pokok</th>                                      
+                                      <th width=40>Tunj.</th>
+                                      <th width=90>Total Gaji</th>
+                                      <th width="30">Action</th>
                                    </tr>                                    
                                 </thead>
                                 <tbody>
                                    {% for baris in container %}
                                       <tr>
-                                         <td>{{ baris[0] }}</td>
+                                         <td>PY-{{ baris[0] }}</td>
                                          <td>{{ baris[1] }}</td>
-                                         <td>{{ baris[3] }}</td>
                                          <td>{{ baris[2] }}</td>
+                                         <td>{{ baris[3] }}</td>
                                          <td>{{ baris[4] }}</td>
+                                         <td style="font-size: 14px;">Rp. {{ "{:,}".format(baris[5]) }}</td>                                         
+                                         <td>{{ baris[6] }}%</td>
+                                         <td style="font-size: 14px;">Rp. {{ "{:,}".format(baris[7]) }}</td>
+                                         
                                          <td>
-                                          <a href="http://localhost:5000/ubah_user/{{baris[0]}}" class="btn btn-success custom-btn" style="width: 30px; font-size: 18px; padding: 2px;"><i class="fa fa-edit"></i></a>
-                                         <a href="http://localhost:5000/hapus_user/{{baris[0]}}" class="btn btn-danger custom-btn" style="width: 30px; font-size: 18px; padding: 2px;"><i class="fa fa-trash-o"></i></a>
+                                          <a href="http://localhost:5000/print_payroll/{{baris[0]}}" class="btn btn-info custom-btn" style="width: 30px; font-size: 18px; padding: 2px;"><i class="fa fa-print"></i></a>
+                                         <a href="http://localhost:5000/hapus_payroll/{{baris[0]}}" class="btn btn-danger custom-btn" style="width: 30px; font-size: 18px; padding: 2px;"><i class="fa fa-trash-o"></i></a>
                                        </td>
                                       </tr>
                                    {% endfor %}

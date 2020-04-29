@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title id="judul">Aplikasi HRD - {{ uriTest }}</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6" style="text-align: center;">
+        <h4>SLIP GAJI</h4>
+        <!-- {{data[0]}} -->
+      </div>
+      <div class="col-md-8">
+        <table>
+          <th width="100"></th>
+          <th></th>
+          <th></th>
+          <tr>
+            <td width="100">Tanggal</td>
+            <td width="10">:</td>
+            <td>{{data[1]}}</td>
+          </tr>
+          <tr>
+            <td width="100">Nama</td>
+            <td width="10">:</td>
+            <td>{{data[3]}}</td>
+          </tr>  
+          <tr>
+            <td width="100">NIK</td>
+            <td width="10">:</td>
+            <td>{{data[2]}}</td>
+          </tr>     
+          <tr>
+            <td width="100">ID Payroll</td>
+            <td width="10">:</td>
+            <td>PY-{{data[0]}}</td>
+          </tr>                           
+        </table>
+        <!-- {{data[0]}} -->
+      </div>      
+      <div class="col-md-6">
+        <table class="table" width="100%">
+          <thead>
+            <th>Gaji Pokok</th>
+            <th>Tunjangan</th>            
+          </thead>
+          <tbody>
+            <tr>
+              <td>Rp. {{"{:,}".format(data[4])}}</td>
+              <td>{{data[5]}}%</td>
+            </tr>
+            <tr style="text-align: right;">
+              <td colspan="2">Total Gaji : Rp. {{"{:,}".format(data[6])}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="col-md-12" style="text-align: right; ">
+          Personalia
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
