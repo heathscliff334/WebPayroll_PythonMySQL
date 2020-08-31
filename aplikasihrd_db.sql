@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2020 at 11:48 AM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.4
+-- Generation Time: Apr 29, 2020 at 06:46 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,33 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `flaskdb_buku`
+-- Database: `aplikasihrd_db`
 --
-CREATE DATABASE IF NOT EXISTS `flaskdb_buku` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `flaskdb_buku`;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `buku`
---
-
-DROP TABLE IF EXISTS `buku`;
-CREATE TABLE `buku` (
-  `id` int(11) NOT NULL,
-  `judul` varchar(100) NOT NULL,
-  `penulis` varchar(100) NOT NULL,
-  `penerbit` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `buku`
---
-
-INSERT INTO `buku` (`id`, `judul`, `penulis`, `penerbit`) VALUES
-(1, 'test', 'test', 'test'),
-(3, 'test 3', 'test 3', 'test 3'),
-(4, 'test 4', 'test 4', 'test 4');
+CREATE DATABASE IF NOT EXISTS `aplikasihrd_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `aplikasihrd_db`;
 
 -- --------------------------------------------------------
 
@@ -69,7 +46,9 @@ CREATE TABLE `gaji` (
 INSERT INTO `gaji` (`id`, `nik`, `tanggal`, `gaji_pokok`, `total_gaji`) VALUES
 (1, 1, '2020-04-27', 3000000, 3600000),
 (2, 2, '2020-04-28', 5000000, 6250000),
-(3, 6, '2020-04-28', 6000000, 7800000);
+(3, 6, '2020-04-28', 6000000, 7800000),
+(4, 2, '2020-04-29', 5000000, 6250000),
+(5, 3, '2020-04-29', 10000000, 15000000);
 
 -- --------------------------------------------------------
 
@@ -119,7 +98,8 @@ INSERT INTO `karyawan` (`nik`, `nama`, `jabatan`, `gaji_pokok`, `email`, `telp`)
 (2, 'Kevin Laurence', 'SV01', 5000000, 'heathscliff334@gmail.com', '087792923179'),
 (3, 'Lala', 'C01', 10000000, 'lalalaurence@gmail.com', '0878468542'),
 (4, 'Hartono', 'MN01', 6500000, 'hartono@gmail.com', '08784685468'),
-(6, 'Laurence', 'MN01', 6000000, 'laurence@gmail.com', '08784685468');
+(6, 'Laurence', 'MN01', 6000000, 'laurence@gmail.com', '08784685468'),
+(7, 'Kevin', 'C01', 12000000, 's32170010@student.ubm.ac.id', '087819151700');
 
 -- --------------------------------------------------------
 
@@ -148,12 +128,6 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `nama_lengkap`, `role`) 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `buku`
---
-ALTER TABLE `buku`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `gaji`

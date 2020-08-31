@@ -1,12 +1,11 @@
 from flask import Flask, render_template, \
   request, redirect, url_for
 import mysql.connector
-import hashlib
 
 app = Flask(__name__)
 app.config['DB_USER'] = 'root'
 app.config['DB_PASSWORD'] = ''
-app.config['DB_NAME'] = 'flaskdb_buku'
+app.config['DB_NAME'] = 'aplikasihrd_db'
 app.config['DB_HOST'] = 'localhost'
 
 conn = cursor = None
